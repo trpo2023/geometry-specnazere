@@ -21,4 +21,17 @@ int stringsCompare(char* firstString, char* secondString)
 main()
 {
 	cout << "Hello World!";
+	
+	char inputChar;
+	char input[100];
+	int i = 0;
+	
+	while (inputChar != '\n')
+	{
+		cin >> inputChar;
+		input[i] = inputChar;
+		i += 1;
+	}
+	input[--i] = '\0'
+	int N = i;
 }
