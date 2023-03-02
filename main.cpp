@@ -66,5 +66,48 @@ main()
 		'C', // X, Y, r
 	};
 
-	
+	char* inputPtr = input;
+	int stringPos = 0;
+
+	while (inputPtr[0] != '\0')
+	{
+		for (i = 0; i < figuresNum; i += 1)
+		{
+			difNum = stringsCompare(inputPtr, figuresNames[i], '(');
+			if (difNum == 0) break;
+		}
+
+		if (difNum == 0) 
+		{
+			cout << "\nERROR! wrong input";
+			return 1;
+		}
+
+		translatedInputCodes[stringPos] = figuresCodes[i];
+		translatedInputNames[stringPos] = figuresNames[i];
+		translatedInputData [stringPos] = new float[figuresDatas[i]];
+
+		int  datas = figuresDatas[i];
+		int  afterPointSymbols;
+		bool wasPoint;
+
+		for (; inputPtr[0] != '('; inputPtr += 1);
+
+		for (i = 0; i < datas; i += 1)
+		{
+			wasPoint = false;
+			afterPointSymbols = 0;
+			translatedInputData[stringPos][i] = 0;
+
+			for (; inputPtr[0] != ',' || inputPtr[0] != ')'; inputPtr += 1)
+			{
+				if (inputPtr[0] == '.') {wasPoint = true; continue;}
+				if (wasPoint) afterPointSymbols += 1;
+				translatedInputData[stringPos][i] +  digitFromChar(inputPtr[0]);
+				translatedInputData[stringPos][i] *= 10;
+			}
+		}
+
+		stringPos += 1;
+	}
 }
