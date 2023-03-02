@@ -29,6 +29,7 @@ main()
 	int  i = 0;
 	int  lastEndline;
 	char endWord[] = "end.";
+	int  endWordLen = 4;
 	int  difNum;
 	
 	while (true)
@@ -42,7 +43,7 @@ main()
 		}
 		input[i++] = inputChar;
 	}
-	input[i] = '\0';
+	input[i - endWordLen] = '\0';
 	int N = i;
 	
 	int const figuresNum = 2;
