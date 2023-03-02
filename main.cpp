@@ -60,4 +60,10 @@ main()
 		3, // X, Y, a
 		3, // X, Y, r
 	};
+	int  figuresCodes[figuresNum]     = {
+		'S', // X, Y, a
+		'C', // X, Y, r
+	};
+
+	
 }
