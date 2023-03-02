@@ -2,7 +2,7 @@
 
 using namespace std;
 
-int stringsCompare(char* firstString, char* secondString)
+int stringsCompare(char* firstString, char* secondString, char stopSymbol = '\0')
 {
 	bool isntFinished = true;
 	int i = 0;
@@ -13,7 +13,7 @@ int stringsCompare(char* firstString, char* secondString)
 		if (firstString[i] != secondString[i] && isntFinished)
 			difNum += 1;
 			
-		if (firstString[i] == '\0' || secondString[i] == '\0')
+		if (firstString[i] == stopSymbol || secondString[i] == stopSymbol)
 			isntFinished == false;
 	}
 	
