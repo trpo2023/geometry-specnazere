@@ -1,7 +1,25 @@
 #include <iostream>
-#include <graohics.h>
+#include <graphics.h>
 
 using namespace std;
+
+bool isDigit(char digit)
+{
+	switch (digit)
+	{
+		case '0': return 1;
+		case '1': return 1;
+		case '2': return 1;
+		case '3': return 1;
+		case '4': return 1;
+		case '5': return 1;
+		case '6': return 1;
+		case '7': return 1;
+		case '8': return 1;
+		case '9': return 1;
+		default : return 0;
+	}
+}
 
 int stringsCompare(char* firstString, char* secondString, char stopSymbol = '\0')
 {
@@ -34,6 +52,7 @@ int digitFromChar(char digit)
 		case '7': return 7;
 		case '8': return 8;
 		case '9': return 9;
+		default : return -1;
 	}
 }
 
@@ -77,12 +96,12 @@ main()
 		for (i = 0; i < figuresNum; i += 1)
 		{
 			difNum = stringsCompare(inputPtr, figuresNames[i], '(');
-			if (difNum == 0) break;
+			if (difNum <= 1) break;
 		}
 
-		if (difNum == 0) 
+		if (difNum > 1) 
 		{
-			cout << "\nERROR! wrong input";
+			cout << "\nERROR! unknown figure's name";
 			return 1;
 		}
 
@@ -104,7 +123,19 @@ main()
 
 			for (; inputPtr[0] != ',' || inputPtr[0] != ')'; inputPtr += 1)
 			{
-				if (inputPtr[0] == '.') {wasPoint = true; continue;}
+				if (!(isDigit(inputPtr[0]))) 
+				{
+					cout << "\ncol " << (int)(inputPtr - input) << " line " << stringPos
+						<< " expected digit, have \"" << inputPtr[1] << "\"";
+					return -1;
+				}
+				wasPoint = true; 
+				if (inputPtr[0] == '.') 
+				{
+					inputPtr += 2;
+					continue;
+				}
+				
 				if (wasPoint) afterPointSymbols += 1;
 				translatedInputData[stringPos][i] +  digitFromChar(inputPtr[0]);
 				translatedInputData[stringPos][i] *= 10;
@@ -120,5 +151,5 @@ main()
 	
 	int fps = 60;
 	
-	windowinit(windowHeight, windowWidth);
+	initwindow(windowHeight, windowWidth);
 }
