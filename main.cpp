@@ -1,5 +1,7 @@
 #include <iostream>
 
+using namespace std;
+
 int stringsCompare(char* firstString, char* secondString)
 {
 	bool isntFinished = true;
@@ -26,24 +28,24 @@ main()
 	char input[100];
 	int  i = 0;
 	int  lastEndline;
-	char endWord = "end.";
+	char endWord[] = "end.";
 	int  difNum;
 	
 	while (true)
 	{
 		cin >> inputChar;
-		input[i++] = inputChar;
 		if (inputChar = '\n')
 		{
 			difNum = stringsCompare(input + lastEndline, endWord);
 			if (difNum = 0) break;
 			lastEndline = i;
 		}
+		input[i++] = inputChar;
 	}
 	input[i] = '\0';
 	int N = i;
 	
-	int figuresNum = 2;
+	int const figuresNum = 2;
 	
 	// 10 there is gag while not a dynamic
 	float *translatedInputData [10]; //pointer to data
@@ -53,9 +55,9 @@ main()
 	char figuresNames[figuresNum][10] = {
 		"square",
 		"circle"
-	}
+	};
 	int  figuresDatas[figuresNum]     = {
 		3, // X, Y, a
 		3, // X, Y, r
-	}
+	};
 }
