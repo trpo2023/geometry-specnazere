@@ -1,4 +1,5 @@
 #include <iostream>
+#include <graohics.h>
 
 using namespace std;
 
@@ -16,7 +17,6 @@ int stringsCompare(char* firstString, char* secondString, char stopSymbol = '\0'
 		if (firstString[i] == stopSymbol || secondString[i] == stopSymbol)
 			isntFinished == false;
 	}
-	
 	return difNum;
 }
 
@@ -40,20 +40,14 @@ int digitFromChar(char digit)
 main()
 {
 	cout << "Hello World!";
-	
-	char inputChar;
+
 	char input[100];
 	int  i = 0;
-	int  lastEndline;
-	char endWord[] = "end.";
-	int  endWordLen = 4;
 	int  difNum;
 	
 	cin >> input;
 	while (input[++i] != '\0');
 	int N = i;
-	
-	cout << "ended";
 	
 	int const figuresNum = 2;
 	
@@ -119,4 +113,12 @@ main()
 
 		stringPos += 1;
 	}
+	
+	
+	int windowHeight = 1200;
+	int windowWidth  = 1600;
+	
+	int fps = 60;
+	
+	windowinit(windowHeight, windowWidth);
 }
