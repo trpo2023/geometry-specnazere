@@ -23,17 +23,22 @@ bool isDigit(char digit)
 
 int stringsCompare(char* firstString, char* secondString, char stopSymbol = '\0')
 {
-	bool isntFinished = true;
 	int i = 0;
 	int difNum = 0;
 	
-	while (isntFinished)
+	while (
+		(firstString[i]  != stopSymbol &&
+		 secondString[i] != stopSymbol) &&
+		(firstString[i]  != '\0'       &&
+		 secondString[i] != '\0')
+		)
 	{
-		if (firstString[i] != secondString[i] && isntFinished)
+		if (firstString[i] != secondString[i])
+		{
 			difNum += 1;
+		}
 			
-		if (firstString[i] == stopSymbol || secondString[i] == stopSymbol)
-			isntFinished == false;
+		i += 1;
 	}
 	return difNum;
 }
@@ -58,8 +63,6 @@ int digitFromChar(char digit)
 
 main()
 {
-	cout << "Hello World!";
-
 	char input[100];
 	int  i = 0;
 	int  difNum;
@@ -68,9 +71,8 @@ main()
     file = fopen("figures.txt", "r");
     
     do input[i] = fgetc(file);
-	while (input[i++] != EOF);
+    while (input[i++] != EOF);
 	input[--i] = '\0';
-	int N = i;
 	
 	int const figuresNum = 2;
 	
@@ -79,15 +81,15 @@ main()
 	char  *translatedInputNames[10]; //pointer to name
 	char   translatedInputCodes[10]; //code of type
 	
-	char figuresNames[figuresNum][10] = {
-		"square",
-		"circle"
+	char figuresNames[figuresNum][8] = {
+		"square\0",
+		"circle\0"
 	};
-	int  figuresDatas[figuresNum]     = {
+	int  figuresDatas[figuresNum]    = {
 		3, // X, Y, a
 		3, // X, Y, r
 	};
-	int  figuresCodes[figuresNum]     = {
+	int  figuresCodes[figuresNum]    = {
 		'S', // X, Y, a
 		'C', // X, Y, r
 	};
@@ -95,20 +97,19 @@ main()
 	char* inputPtr = input;
 	int stringPos = 0;
 
-	while (inputPtr[0] != '\0')
+	while (inputPtr[1] != '\0')
 	{
 		for (i = 0; i < figuresNum; i += 1)
 		{
 			difNum = stringsCompare(inputPtr, figuresNames[i], '(');
 			if (difNum <= 1) break;
 		}
-
 		if (difNum > 1) 
 		{
-			cout << "\nERROR! unknown figure's name";
+			cout << "\nERROR! unknown figure's name at line " << stringPos + 1;
 			return 1;
 		}
-
+		
 		translatedInputCodes[stringPos] = figuresCodes[i];
 		translatedInputNames[stringPos] = figuresNames[i];
 		translatedInputData [stringPos] = new float[figuresDatas[i]];
@@ -117,7 +118,7 @@ main()
 		int  afterPointSymbols;
 		bool wasPoint;
 
-		for (; inputPtr[0] != '('; inputPtr += 1);
+		for (; inputPtr[-1] != '('; inputPtr += 1);
 
 		for (i = 0; i < datas; i += 1)
 		{
@@ -125,26 +126,28 @@ main()
 			afterPointSymbols = 0;
 			translatedInputData[stringPos][i] = 0;
 
-			for (; inputPtr[0] != ',' || inputPtr[0] != ')'; inputPtr += 1)
+			for (; inputPtr[0] != ',' && inputPtr[0] != ')'; inputPtr += 1)
 			{
+				if (inputPtr[0] == '.') 
+				{                                    
+					wasPoint = true; 
+					continue;
+				}
+				
 				if (!(isDigit(inputPtr[0]))) 
 				{
-					cout << "\ncol " << (int)(inputPtr - input) << " line " << stringPos
-						<< " expected digit, have \"" << inputPtr[1] << "\"";
-					return -1;
-				}
-				wasPoint = true; 
-				if (inputPtr[0] == '.') 
-				{
-					inputPtr += 2;
-					continue;
+					cout << "\ncol " << (int)(inputPtr - input) + 1 << " line " << stringPos + 1
+						<< " expected digit, have \"" << inputPtr[0] << "\"";
+					return 1;
 				}
 				
 				if (wasPoint) afterPointSymbols += 1;
 				translatedInputData[stringPos][i] +  digitFromChar(inputPtr[0]);
 				translatedInputData[stringPos][i] *= 10;
 			}
+			inputPtr += 2;
 		}
+		inputPtr -= 2;
 
 		stringPos += 1;
 	}
