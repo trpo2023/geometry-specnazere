@@ -49,19 +49,11 @@ main()
 	int  endWordLen = 4;
 	int  difNum;
 	
-	while (true)
-	{
-		cin >> inputChar;
-		if (inputChar = '\n')
-		{
-			difNum = stringsCompare(input + lastEndline, endWord);
-			if (difNum = 0) break;
-			lastEndline = i;
-		}
-		input[i++] = inputChar;
-	}
-	input[i - endWordLen] = '\0';
+	cin >> input;
+	while (input[++i] != '\0');
 	int N = i;
+	
+	cout << "ended";
 	
 	int const figuresNum = 2;
 	
