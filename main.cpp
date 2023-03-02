@@ -64,8 +64,12 @@ main()
 	int  i = 0;
 	int  difNum;
 	
-	cin >> input;
-	while (input[++i] != '\0');
+	FILE* file;
+    file = fopen("figures.txt", "r");
+    
+    do input[i] = fgetc(file);
+	while (input[i++] != EOF);
+	input[--i] = '\0';
 	int N = i;
 	
 	int const figuresNum = 2;
