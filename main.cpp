@@ -24,15 +24,23 @@ main()
 	
 	char inputChar;
 	char input[100];
-	int i = 0;
+	int  i = 0;
+	int  lastEndline;
+	char endWord = "end.";
+	int  difNum;
 	
-	while (inputChar != '\n')
+	while (true)
 	{
 		cin >> inputChar;
-		input[i] = inputChar;
-		i += 1;
+		input[i++] = inputChar;
+		if (inputChar = '\n')
+		{
+			difNum = stringsCompare(input + lastEndline, endWord);
+			if (difNum = 0) break;
+			lastEndline = i;
+		}
 	}
-	input[--i] = '\0'
+	input[i] = '\0';
 	int N = i;
 	
 	int figuresNum = 2;
