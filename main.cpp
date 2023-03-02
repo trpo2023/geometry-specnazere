@@ -34,4 +34,20 @@ main()
 	}
 	input[--i] = '\0'
 	int N = i;
+	
+	int figuresNum = 2;
+	
+	// 10 there is gag while not a dynamic
+	float *translatedInputData [10]; //pointer to data
+	char  *translatedInputNames[10]; //pointer to name
+	char   translatedInputCodes[10]; //code of type
+	
+	char figuresNames[figuresNum][10] = {
+		"square",
+		"circle"
+	}
+	int  figuresDatas[figuresNum]     = {
+		3, // X, Y, a
+		3, // X, Y, r
+	}
 }
