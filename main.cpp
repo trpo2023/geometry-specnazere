@@ -63,6 +63,8 @@ int digitFromChar(char digit)
 
 main()
 {
+	cout << "Start sucess\n";
+
 	char input[100];
 	int  i = 0;
 	int  difNum;
@@ -157,6 +159,4 @@ main()
 	int windowWidth  = 1600;
 	
 	int fps = 60;
-	
-	initwindow(windowHeight, windowWidth);
 }
