@@ -1,6 +1,16 @@
 #include <iostream>
 #include <graphics.h>
 
+#define Names 0
+#define Datas 1
+#define Codes 2
+
+#define square 0
+#define circle 1
+
+#define X 0
+#define Y 0
+
 using namespace std;
 
 bool isDigit(char digit)
@@ -68,6 +78,7 @@ main()
 	char input[100];
 	int  i = 0;
 	int  difNum;
+	int  
 	
 	FILE* file;
     file = fopen("figures.txt", "r");
@@ -77,24 +88,28 @@ main()
 	input[--i] = '\0';
 	
 	int const figuresNum = 2;
-	
-	// 10 there is gag while not a dynamic
-	float *translatedInputData [10]; //pointer to data
-	char  *translatedInputNames[10]; //pointer to name
-	char   translatedInputCodes[10]; //code of type
-	
-	char figuresNames[figuresNum][8] = {
-		"square\0",
-		"circle\0"
+
+	void* Data[2];
+
+	char figuresNames[][8] = {
+		"square",
+		"circle",
 	};
-	int  figuresDatas[figuresNum]    = {
+	int  figuresDatas[]    = {
 		3, // X, Y, a
 		3, // X, Y, r
 	};
-	int  figuresCodes[figuresNum]    = {
-		'S', // X, Y, a
-		'C', // X, Y, r
+	int  figuresCodes[]    = {
+		square,
+		circle,
 	};
+	
+	void *figures[] = {
+		figuresNames,
+		figuresDatas,
+		figuresCodes,
+	};
+
 
 	char* inputPtr = input;
 	int stringPos = 0;
