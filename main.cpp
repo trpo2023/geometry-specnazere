@@ -130,11 +130,6 @@ main()
 			difNum = stringsCompare(inputPtr, figuresNames[i], '(');
 			if (difNum <= 1) break;
 		}
-		if (difNum > 1) 
-		{
-			cout << "\nERROR! unknown figure's name at line " << stringPos + 1;
-			return 1;
-		}
 		
 		translatedInputCodes[stringPos] = figuresCodes[i];
 		translatedInputNames[stringPos] = figuresNames[i];
@@ -158,13 +153,6 @@ main()
 				{                                    
 					wasPoint = true; 
 					continue;
-				}
-				
-				if (!(isDigit(inputPtr[0]))) 
-				{
-					cout << "\ncol " << (int)(inputPtr - input) + 1 << " line " << stringPos + 1
-						<< " expected digit, have \"" << inputPtr[0] << "\"";
-					return 1;
 				}
 				
 				if (wasPoint) afterPointSymbols += 1;
