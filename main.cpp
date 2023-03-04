@@ -31,26 +31,32 @@ bool isDigit(char digit)
 	}
 }
 
-int stringsCompare(char* firstString, char* secondString, char stopSymbol = '\0')
+bool stringsCompare(char* string, char* etalonString, char stopSymbol = '\0')
 {
-	int i = 0;
-	int difNum = 0;
-	
+	int dif = 0;
+	int len  = 0;
+	int etalonLen = 0;
+	int lenDif;
+
 	while (
-		(firstString[i]  != stopSymbol &&
-		 secondString[i] != stopSymbol) &&
-		(firstString[i]  != '\0'       &&
-		 secondString[i] != '\0')
-		)
+		string[len] != '\0' &&
+		string[len] != stopSymbol
+	)   
+		len += 1;
+
+	while (
+		etalonString[etalonLen] != '\0' &&
+		etalonString[etalonLen] != stopSymbol
+	)   
+		etalonLen += 1;
+
+	if (len != etalonLen) return 0;
+
+	for (int i = 0; i < len; i += 1)
 	{
-		if (firstString[i] != secondString[i])
-		{
-			difNum += 1;
-		}
-			
-		i += 1;
+		if (string[i] != etalonString[i]) return 0;
 	}
-	return difNum;
+	return 1;
 }
 
 int digitFromChar(char digit)
