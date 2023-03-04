@@ -75,15 +75,18 @@ main()
 {
 	cout << "Start sucess\n";
 
-	char input[100];
+	char input[500];
 	int  i = 0;
 	int  difNum;
-	int  
+	int  stringsNum = 1;
 	
 	FILE* file;
     file = fopen("figures.txt", "r");
     
-    do input[i] = fgetc(file);
+    do {
+		input[i] = fgetc(file);
+		if (input[i] = '\n') stringsNum += 1;
+	}
     while (input[i++] != EOF);
 	input[--i] = '\0';
 	
