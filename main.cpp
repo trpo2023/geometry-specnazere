@@ -79,8 +79,9 @@ main()
 
 	char  input[500];  // up to 500 symbols while not dynamic
 	char* strings[15]; // up to 15  strings while not dynamic
-	int  i = 0;
-	int  j = 0;
+	int  i = 0,
+		 j = 0,
+		 k = 0;
 	int  difNum;
 	int  stringsNum = 1;
 	
@@ -89,10 +90,11 @@ main()
 
     do {
 		input[i] = fgetc(file);
-		if (input[i] = '\n') 
-		{
+		if (input[i] == '\n') 
+		{	
+			input[i] = '\0';
 			stringsNum += 1;
-			strings[j++] = input + i;
+			strings[j++] = input + i + 1;
 		}
 	}
     while (input[i++] != EOF);
@@ -119,14 +121,74 @@ main()
 	char* inputPtr = input;
 	int string = 0;
 
+
+	// i - string index
+	// j - symbol index
+	// k - figure index, Data index later
+	for (i = 0; i < stringsNum; i += 1)
+	{
+		cout << strings[i] << '\n';
+
+		if (strings[i][0] == '(') {errorLog(i, j, EMPTY_FIGURE_NAME); continue;}
+		if (strings[i][0] == '\0') {errorLog(i, j, EMPTY_STRING); continue;}
+
+		j = -1;
+
+
+		while (isalpha(strings[i][++j]));
+		
+		if (isdigit(strings[i][j])) {errorLog(i, j, EXPECTED_OPENED_BRACKET); continue;}
+		if (strings[i][j] == ')') {errorLog(i, j, EXPECTED_OPENED_BRACKET); continue;}
+		if (strings[i][j] != '(') {errorLog(i, j, INVALID_SYMBOL); continue;}
+
+
+		for (k = 0; k < figuresNum; k += 1)
+			if (stringsCompare(inputPtr, figuresNames[k], '(')) break;
+
+		inputCode[i] = k;
+		inputData[i] = new float[figuresDatas[k]];
+
+
+		int dataNum = figuresDatas[k];
+
+		for (int cord = 0; cord < 2; cord += 1)
+		{
+			while (isdigit(strings[i][++j]));
+
+			if (strings[i][j] == ' ') {errorLog(i, j, EXPECTED_FLOAT_TYPE); continue;}
+			if (strings[i][j] != '.') {errorLog(i, j, INVALID_SYMBOL); continue;}
+
+
+			while (isdigit(strings[i][++j]));
+
+			if (cord == 0)
+			{
+				if (strings[i][j] == ',') {errorLog(i, j, EXPECTED_SPACE); continue;}
+				if (strings[i][j] != ' ') {errorLog(i, j, INVALID_SYMBOL); continue;}
+			}
+		}
+
+		for(k = 0; k < dataNum; k += 1)
+		{
+			if (strings[i][j] == ' ' || strings[i][j] == '.') {errorLog(i, j, EXPECTED_COMMA); continue;}
+			if (strings[i][j] != ',') {errorLog(i, j, INVALID_SYMBOL); continue;}
+			if (isdigit(strings[i][++j])) {errorLog(i, j, EXPECTED_SPACE); continue;}
+			if (strings[i][j] != ' ') {errorLog(i, j, INVALID_SYMBOL); continue;}
+
+			while (isdigit(strings[i][++j]));
+
+			if (strings[i][j] == ' ') {errorLog(i, j, EXPECTED_FLOAT_TYPE); continue;}
+			if (strings[i][j] != '.') {errorLog(i, j, INVALID_SYMBOL); continue;}
+
+
+			while (isdigit(strings[i][++j]));
+		}
+
+		if (strings[i][j] != ')') {errorLog(i, j, EXPECTED_CLOSED_BRACKET); continue;}
+	}
+
 	while (inputPtr[1] != '\0')
 	{
-		for (i = 0; i < figuresNum; i += 1)
-			if (stringsCompare(inputPtr, figuresNames[i], '(')) break;
-		
-		inputCode[string] = figuresCodes[i];
-		inputData[string] = new float[figuresDatas[i]];
-
 		int  datas = figuresDatas[i];
 		int  afterPointSymbols;
 		bool wasPoint;
