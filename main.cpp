@@ -1,10 +1,6 @@
 #include <iostream>
 #include <graphics.h>
 
-#define Names 0
-#define Datas 1
-#define Codes 2
-
 #define square 0
 #define circle 1
 
@@ -98,7 +94,9 @@ main()
 	
 	int const figuresNum = 2;
 
-	void* Data[2];
+	// 10 пока что прросто заглушка, пока массив не расширяется динамически
+	int    inputCode[10];
+	float* inputData[10];
 
 	char figuresNames[][8] = {
 		"square",
@@ -112,28 +110,17 @@ main()
 		square,
 		circle,
 	};
-	
-	void *figures[] = {
-		figuresNames,
-		figuresDatas,
-		figuresCodes,
-	};
-
 
 	char* inputPtr = input;
-	int stringPos = 0;
+	int string = 0;
 
 	while (inputPtr[1] != '\0')
 	{
 		for (i = 0; i < figuresNum; i += 1)
-		{
-			difNum = stringsCompare(inputPtr, figuresNames[i], '(');
-			if (difNum <= 1) break;
-		}
+			if (stringsCompare(inputPtr, figuresNames[i], '(')) break;
 		
-		translatedInputCodes[stringPos] = figuresCodes[i];
-		translatedInputNames[stringPos] = figuresNames[i];
-		translatedInputData [stringPos] = new float[figuresDatas[i]];
+		inputCode[string] = figuresCodes[i];
+		inputData[string] = new float[figuresDatas[i]];
 
 		int  datas = figuresDatas[i];
 		int  afterPointSymbols;
@@ -145,7 +132,7 @@ main()
 		{
 			wasPoint = false;
 			afterPointSymbols = 0;
-			translatedInputData[stringPos][i] = 0;
+			inputData[string][i] = 0;
 
 			for (; inputPtr[0] != ',' && inputPtr[0] != ')'; inputPtr += 1)
 			{
@@ -156,14 +143,14 @@ main()
 				}
 				
 				if (wasPoint) afterPointSymbols += 1;
-				translatedInputData[stringPos][i] +  digitFromChar(inputPtr[0]);
-				translatedInputData[stringPos][i] *= 10;
+				inputData[string][i] +  digitFromChar(inputPtr[0]);
+				inputData[string][i] *= 10;
 			}
 			inputPtr += 2;
 		}
 		inputPtr -= 2;
 
-		stringPos += 1;
+		string += 1;
 	}
 	
 	
