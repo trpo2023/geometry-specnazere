@@ -19,6 +19,8 @@
 
 using namespace std;
 
+void errorLog(int string, int symbol, int errorCode);
+
 bool isDigit(char digit)
 {
 	switch (digit)
