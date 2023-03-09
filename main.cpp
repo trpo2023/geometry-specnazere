@@ -77,26 +77,31 @@ main()
 {
 	cout << "Start sucess\n";
 
-	char input[500];
+	char  input[500];  // up to 500 symbols while not dynamic
+	char* strings[15]; // up to 15  strings while not dynamic
 	int  i = 0;
+	int  j = 0;
 	int  difNum;
 	int  stringsNum = 1;
 	
 	FILE* file;
     file = fopen("figures.txt", "r");
-    
+
     do {
 		input[i] = fgetc(file);
-		if (input[i] = '\n') stringsNum += 1;
+		if (input[i] = '\n') 
+		{
+			stringsNum += 1;
+			strings[j++] = input + i;
+		}
 	}
     while (input[i++] != EOF);
 	input[--i] = '\0';
 	
 	int const figuresNum = 2;
 
-	// 10 пока что прросто заглушка, пока массив не расширяется динамически
-	int    inputCode[10];
-	float* inputData[10];
+	int    inputCode[15];
+	float* inputData[15];
 
 	char figuresNames[][8] = {
 		"square",
