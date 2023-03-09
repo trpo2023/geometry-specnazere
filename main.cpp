@@ -7,6 +7,16 @@
 #define X 0
 #define Y 0
 
+#define EMPTY_FIGURE_NAME 0
+#define EMPTY_STRING 1
+#define EXPECTED_OPENED_BRACKET 2
+#define INVALID_SYMBOL 3
+#define EXPECTED_FLOAT_TYPE 4
+#define EXPECTED_SPACE 5
+#define EXPECTED_COMMA 6
+#define EXPECTED_CLOSED_BRACKET 7
+
+
 using namespace std;
 
 bool isDigit(char digit)
