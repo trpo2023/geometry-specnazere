@@ -1,5 +1,5 @@
 compile:
-	g++ -o main.exe main.cpp
+	g++ -wall -verror -o main.exe main.cpp
 	
 run:
 	./main
