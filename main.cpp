@@ -184,8 +184,10 @@ main()
 
 		int dataNum = figuresDatas[k];
 
-		for (int cord = 0; cord < 2; cord += 1)
-		{
+		//for (int cord = 0; cord < 2; cord += 1)
+		int cord = 0;
+		L1:
+
 			while (isdigit(strings[i][++j]));
 
 			if (strings[i][j] == ' ') {errorLog(i, j, EXPECTED_FLOAT_TYPE); continue;}
@@ -199,10 +201,13 @@ main()
 				if (strings[i][j] == ',') {errorLog(i, j, EXPECTED_SPACE); continue;}
 				if (strings[i][j] != ' ') {errorLog(i, j, INVALID_SYMBOL); continue;}
 			}
-		}
+		cord += 1;
+		if (cord < 2) goto L1; // for cycle end
 
-		for(k = 0; k < dataNum; k += 1)
-		{
+		// for(k = 0; k < dataNum; k += 1)
+		k = 0;
+		L2:
+			
 			if (strings[i][j] == ' ' || strings[i][j] == '.') {errorLog(i, j, EXPECTED_COMMA); continue;}
 			if (strings[i][j] != ',') {errorLog(i, j, INVALID_SYMBOL); continue;}
 			if (isdigit(strings[i][++j])) {errorLog(i, j, EXPECTED_SPACE); continue;}
@@ -215,7 +220,9 @@ main()
 
 
 			while (isdigit(strings[i][++j]));
-		}
+
+		k += 1;
+		if (k < dataNum) goto L2; // for cycle end
 
 		if (strings[i][j] != ')') {errorLog(i, j, EXPECTED_CLOSED_BRACKET); continue;}
 
