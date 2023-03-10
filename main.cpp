@@ -15,6 +15,7 @@
 #define EXPECTED_SPACE 5
 #define EXPECTED_COMMA 6
 #define EXPECTED_CLOSED_BRACKET 7
+#define EXPECTED_STRING_END 8
 
 
 using namespace std;
@@ -35,6 +36,7 @@ void errorLog(int string, int symbol, int errorCode)
 		case EXPECTED_SPACE: cout << " After comma must be space"; break;
 		case EXPECTED_COMMA: cout << " Must be comma among datas"; break;
 		case EXPECTED_CLOSED_BRACKET: cout << " Brackets must be closed"; break;
+		case EXPECTED_STRING_END: cout << " After brackets line must end"; break;
 	}
 	cout << '\n' << '\n';
 }
@@ -110,7 +112,7 @@ main()
 	char  input[500];  // up to 500 symbols while not dynamic
 	char* strings[15]; // up to 15  strings while not dynamic
 	int  i = 0,
-		 j = 0,
+		 j = 1,
 		 k = 0;
 	int  difNum;
 	int  stringsNum = 1;
@@ -118,6 +120,7 @@ main()
 	FILE* file;
     file = fopen("figures.txt", "r");
 
+	strings[0] = input;
     do {
 		input[i] = fgetc(file);
 		if (input[i] == '\n') 
@@ -140,8 +143,8 @@ main()
 		"circle",
 	};
 	int  figuresDatas[]    = {
-		3, // X, Y, a
-		3, // X, Y, r
+		1, // a
+		1, // r
 	};
 	int  figuresCodes[]    = {
 		square,
@@ -159,8 +162,8 @@ main()
 	{
 		cout << strings[i] << '\n';
 
-		if (strings[i][0] == '(') {errorLog(i, j, EMPTY_FIGURE_NAME); continue;}
-		if (strings[i][0] == '\0') {errorLog(i, j, EMPTY_STRING); continue;}
+		if (strings[i][0] == '(') {errorLog(i, 0, EMPTY_FIGURE_NAME); continue;}
+		if (strings[i][0] == '\0') {errorLog(i, 0, EMPTY_STRING); continue;}
 
 		j = -1;
 
@@ -215,6 +218,10 @@ main()
 		}
 
 		if (strings[i][j] != ')') {errorLog(i, j, EXPECTED_CLOSED_BRACKET); continue;}
+
+		j += 1;
+		
+		if (strings[i][j] != '\0') {errorLog(i, j, EXPECTED_STRING_END); continue;}
 	}
 
 	while (inputPtr[1] != '\0')
