@@ -16,6 +16,7 @@
 #define EXPECTED_COMMA 6
 #define EXPECTED_CLOSED_BRACKET 7
 #define EXPECTED_STRING_END 8
+#define INVALID_FIGURE 9
 
 
 using namespace std;
@@ -37,6 +38,7 @@ void errorLog(int string, int symbol, int errorCode)
 		case EXPECTED_COMMA: cout << " Must be comma among datas"; break;
 		case EXPECTED_CLOSED_BRACKET: cout << " Brackets must be closed"; break;
 		case EXPECTED_STRING_END: cout << " After brackets line must end"; break;
+		case INVALID_FIGURE: cout << " Figure's name don't match any supported"; break;
 	}
 	cout << '\n' << '\n';
 }
@@ -176,8 +178,14 @@ main()
 
 
 		for (k = 0; k < figuresNum; k += 1)
-			if (stringsCompare(inputPtr, figuresNames[k], '(')) break;
+			if (stringsCompare(strings[i], figuresNames[k], '(')) 
+			{
+				k *= -1;
+				break;
+			};
 
+		if (k > 0) {errorLog(i, 0, INVALID_FIGURE); continue;}
+		k *= 1;
 		inputCode[i] = k;
 		inputData[i] = new float[figuresDatas[k]];
 
