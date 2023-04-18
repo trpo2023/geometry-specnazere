@@ -1,11 +1,7 @@
 #include <iostream>
-#include <graphics.h>
 
-#define square 0
-#define circle 1
-
-#define X 0
-#define Y 0
+#include "src/errors_catch.h"
+#include "src/strings.h"
 
 #define EMPTY_FIGURE_NAME 0
 #define EMPTY_STRING 1
@@ -18,96 +14,15 @@
 #define EXPECTED_STRING_END 8
 #define INVALID_FIGURE 9
 
-
 using namespace std;
 
-void errorLog(int string, int symbol, int errorCode)
-{
-	for (int i = 0; i < symbol; i += 1) cout << ' ';
-	cout << '^' << '\n';
-	cout << "line " << string + 1 << ", col " << symbol + 1 << ':';
-	
-	switch(errorCode)
-	{
-		case EMPTY_FIGURE_NAME: cout << " Figure's name must have at least 1 english symbol"; break;
-		case EMPTY_STRING: cout << " Empty line"; break;
-		case EXPECTED_OPENED_BRACKET: cout << " After figure's name data must be in brackets"; break;
-		case INVALID_SYMBOL: cout << " Unexpected symbol"; break;
-		case EXPECTED_FLOAT_TYPE: cout << " there was no point, but requre float type"; break;
-		case EXPECTED_SPACE: cout << " After comma must be space"; break;
-		case EXPECTED_COMMA: cout << " Must be comma among datas"; break;
-		case EXPECTED_CLOSED_BRACKET: cout << " Brackets must be closed"; break;
-		case EXPECTED_STRING_END: cout << " After brackets line must end"; break;
-		case INVALID_FIGURE: cout << " Figure's name don't match any supported"; break;
-	}
-	cout << '\n' << '\n';
-}
+#define square 0
+#define circle 1
 
-bool isDigit(char digit)
-{
-	switch (digit)
-	{
-		case '0': return 1;
-		case '1': return 1;
-		case '2': return 1;
-		case '3': return 1;
-		case '4': return 1;
-		case '5': return 1;
-		case '6': return 1;
-		case '7': return 1;
-		case '8': return 1;
-		case '9': return 1;
-		default : return 0;
-	}
-}
+#define X 0
+#define Y 0
 
-bool stringsCompare(char* string, char* etalonString, char stopSymbol = '\0')
-{
-	int dif = 0;
-	int len  = 0;
-	int etalonLen = 0;
-	int lenDif;
-
-	while (
-		string[len] != '\0' &&
-		string[len] != stopSymbol
-	)   
-		len += 1;
-
-	while (
-		etalonString[etalonLen] != '\0' &&
-		etalonString[etalonLen] != stopSymbol
-	)   
-		etalonLen += 1;
-
-	if (len != etalonLen) return 0;
-
-	for (int i = 0; i < len; i += 1)
-	{
-		if (string[i] != etalonString[i]) return 0;
-	}
-	return 1;
-}
-
-int digitFromChar(char digit)
-{
-	switch (digit)
-	{
-		case '0': return 0;
-		case '1': return 1;
-		case '2': return 2;
-		case '3': return 3;
-		case '4': return 4;
-		case '5': return 5;
-		case '6': return 6;
-		case '7': return 7;
-		case '8': return 8;
-		case '9': return 9;
-		default : return -1;
-	}
-}
-
-main()
+int main()
 {
 	cout << "Start sucess\n";
 
@@ -116,7 +31,7 @@ main()
 	int  i = 0,
 		 j = 1,
 		 k = 0;
-	int  difNum;
+	//int  difNum;
 	int  stringsNum = 1;
 	
 	FILE* file;
@@ -137,7 +52,7 @@ main()
 	
 	int const figuresNum = 2;
 
-	int    inputCode[15];
+	//int    inputCode[15];
 	float* inputData[15];
 
 	char figuresNames[][8] = {
@@ -148,10 +63,11 @@ main()
 		1, // a
 		1, // r
 	};
+	/*
 	int  figuresCodes[]    = {
 		square,
 		circle,
-	};
+	};*/
 
 	char* inputPtr = input;
 	int string = 0;
@@ -186,51 +102,48 @@ main()
 
 		if (k > 0) {errorLog(i, 0, INVALID_FIGURE); continue;}
 		k *= 1;
-		inputCode[i] = k;
+		//inputCode[i] = k;
 		inputData[i] = new float[figuresDatas[k]];
 
 
 		int dataNum = figuresDatas[k];
 
-		//for (int cord = 0; cord < 2; cord += 1)
-		int cord = 0;
-		L1:
-
+		bool isbreak = false;
+		for (int cord = 0; cord < 2; cord += 1)
+		{
 			while (isdigit(strings[i][++j]));
 
-			if (strings[i][j] == ' ') {errorLog(i, j, EXPECTED_FLOAT_TYPE); continue;}
-			if (strings[i][j] != '.') {errorLog(i, j, INVALID_SYMBOL); continue;}
+			if (strings[i][j] == ' ') {errorLog(i, j, EXPECTED_FLOAT_TYPE); isbreak = true; break;}
+			if (strings[i][j] != '.') {errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
 
 
 			while (isdigit(strings[i][++j]));
 
 			if (cord == 0)
 			{
-				if (strings[i][j] == ',') {errorLog(i, j, EXPECTED_SPACE); continue;}
-				if (strings[i][j] != ' ') {errorLog(i, j, INVALID_SYMBOL); continue;}
+				if (strings[i][j] == ',') {errorLog(i, j, EXPECTED_SPACE); isbreak = true; break;}
+				if (strings[i][j] != ' ') {errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
 			}
-		cord += 1;
-		if (cord < 2) goto L1; // for cycle end
+		}
+		if (isbreak) break;
 
-		// for(k = 0; k < dataNum; k += 1)
-		k = 0;
-		L2:
-			
-			if (strings[i][j] == ' ' || strings[i][j] == '.') {errorLog(i, j, EXPECTED_COMMA); continue;}
-			if (strings[i][j] != ',') {errorLog(i, j, INVALID_SYMBOL); continue;}
-			if (isdigit(strings[i][++j])) {errorLog(i, j, EXPECTED_SPACE); continue;}
-			if (strings[i][j] != ' ') {errorLog(i, j, INVALID_SYMBOL); continue;}
+		for(k = 0; k < dataNum; k += 1)
+		{
+			if (strings[i][j] == ' ' || strings[i][j] == '.') {errorLog(i, j, EXPECTED_COMMA); isbreak = true; break;}
+			if (strings[i][j] != ',') {errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
+			if (isdigit(strings[i][++j])) {errorLog(i, j, EXPECTED_SPACE); isbreak = true; break;}
+			if (strings[i][j] != ' ') {errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
 
 			while (isdigit(strings[i][++j]));
 
-			if (strings[i][j] == ' ') {errorLog(i, j, EXPECTED_FLOAT_TYPE); continue;}
-			if (strings[i][j] != '.') {errorLog(i, j, INVALID_SYMBOL); continue;}
+			if (strings[i][j] == ' ') {errorLog(i, j, EXPECTED_FLOAT_TYPE); isbreak = true; break;}
+			if (strings[i][j] != '.') {errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
 
 
 			while (isdigit(strings[i][++j]));
-
-		k += 1;
-		if (k < dataNum) goto L2; // for cycle end
+		}
+		if (isbreak) break;
+		
 
 		if (strings[i][j] != ')') {errorLog(i, j, EXPECTED_CLOSED_BRACKET); continue;}
 
@@ -262,7 +175,7 @@ main()
 				}
 				
 				if (wasPoint) afterPointSymbols += 1;
-				inputData[string][i] +  digitFromChar(inputPtr[0]);
+				inputData[string][i] += digitFromChar(inputPtr[0]);
 				inputData[string][i] *= 10;
 			}
 			inputPtr += 2;
@@ -273,8 +186,8 @@ main()
 	}
 	
 	
-	int windowHeight = 1200;
-	int windowWidth  = 1600;
+	//int windowHeight = 1200;
+	//int windowWidth  = 1600;
 	
-	int fps = 60;
+	//int fps = 60;
 }
