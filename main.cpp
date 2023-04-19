@@ -16,8 +16,8 @@
 
 using namespace std;
 
-#define square 0
-#define circle 1
+#define polygon 0
+#define circle  1
 
 #define X 0
 #define Y 0
@@ -56,12 +56,16 @@ int main()
 	float* inputData[15];
 
 	char figuresNames[][8] = {
-		"square",
+		"polygon",
 		"circle",
 	};
 	int  figuresDatas[]    = {
-		1, // a
+		0, // a
 		1, // r
+	};
+	int  figuresCords[]    = {
+		-1, // dynamic
+		1,  // center
 	};
 	/*
 	int  figuresCodes[]    = {
@@ -76,7 +80,7 @@ int main()
 	// i - string index
 	// j - symbol index
 	// k - figure index, Data index later
-	for (i = 0; i < stringsNum; i += 1)
+	for (i = 0; i < stringsNum; i += 1) // input errors catch
 	{
 		cout << strings[i] << '\n';
 
@@ -101,31 +105,14 @@ int main()
 			};
 
 		if (k > 0) {errorLog(i, 0, INVALID_FIGURE); continue;}
-		k *= 1;
+		k *= -1;
 		//inputCode[i] = k;
 		inputData[i] = new float[figuresDatas[k]];
-
+		
 
 		int dataNum = figuresDatas[k];
 
 		bool isbreak = false;
-		for (int cord = 0; cord < 2; cord += 1)
-		{
-			while (isdigit(strings[i][++j]));
-
-			if (strings[i][j] == ' ') {errorLog(i, j, EXPECTED_FLOAT_TYPE); isbreak = true; break;}
-			if (strings[i][j] != '.') {errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
-
-
-			while (isdigit(strings[i][++j]));
-
-			if (cord == 0)
-			{
-				if (strings[i][j] == ',') {errorLog(i, j, EXPECTED_SPACE); isbreak = true; break;}
-				if (strings[i][j] != ' ') {errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
-			}
-		}
-		if (isbreak) break;
 
 		for(k = 0; k < dataNum; k += 1)
 		{
@@ -141,6 +128,25 @@ int main()
 
 
 			while (isdigit(strings[i][++j]));
+		}
+		if (isbreak) break;
+
+		for (int cord = 0; cord != figuresCords[k]; cord += 1)
+		{
+			if (strings[i][j] == ')' && figuresCords[k] == -1) break
+			while (isdigit(strings[i][++j]));
+
+			if (strings[i][j] == ' ') {errorLog(i, j, EXPECTED_FLOAT_TYPE); isbreak = true; break;}
+			if (strings[i][j] != '.') {errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
+
+
+			while (isdigit(strings[i][++j]));
+
+			if (cord == 0)
+			{
+				if (strings[i][j] == ',') {errorLog(i, j, EXPECTED_SPACE); isbreak = true; break;}
+				if (strings[i][j] != ' ') {errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
+			}
 		}
 		if (isbreak) break;
 		
