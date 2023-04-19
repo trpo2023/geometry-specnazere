@@ -133,7 +133,7 @@ int main()
 
 		for (int cord = 0; cord != figuresCords[k]; cord += 1)
 		{
-			if (strings[i][j] == ')' && figuresCords[k] == -1) break
+			if (strings[i][j] == ')' && figuresCords[k] == -1) break;
 			while (isdigit(strings[i][++j]));
 
 			if (strings[i][j] == ' ') {errorLog(i, j, EXPECTED_FLOAT_TYPE); isbreak = true; break;}
