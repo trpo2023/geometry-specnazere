@@ -2,6 +2,7 @@
 
 #include "src/errors_catch.h"
 #include "src/strings.h"
+#include "src/figures.hpp"
 
 #define EMPTY_FIGURE_NAME 0
 #define EMPTY_STRING 1
@@ -16,8 +17,8 @@
 
 using namespace std;
 
-#define polygon 0
-#define circle  1
+#define POLYGON 0
+#define CIRCLE  1
 
 #define X 0
 #define Y 0
@@ -26,75 +27,75 @@ int main()
 {
 	cout << "Start sucess\n";
 
-	char  input[500];  // up to 500 symbols while not dynamic
-	char* strings[15]; // up to 15  strings while not dynamic
-	int  i = 0,
-		 j = 1,
-		 k = 0;
+	char  input[5000];  // up to 5000 symbols while not dynamic
+	char* strings[50]; // up to 50 strings while not dynamic
 	//int  difNum;
 	int  stringsNum = 1;
-	
+
 	FILE* file;
-    file = fopen("figures.txt", "r");
+    file = fopen("figuresCorrect.txt", "r");
+
+	cout << "File open" << '\n';
 
 	strings[0] = input;
+
+	int j = 1;
+	int i = 0;
     do {
 		input[i] = fgetc(file);
 		if (input[i] == '\n') 
 		{	
 			input[i] = '\0';
 			stringsNum += 1;
-			strings[j++] = input + i + 1;
+			strings[j] = input + i + 1;
+			j += 1;
 		}
 	}
     while (input[i++] != EOF);
+
 	input[--i] = '\0';
 	
+	cout << "File readed" << '\n';
+
 	int const figuresNum = 2;
+	
 
-	//int    inputCode[15];
-	float* inputData[15];
-
-	char figuresNames[][8] = {
+	char figuresNames[figuresNum][8] = {
 		"polygon",
 		"circle",
 	};
-	int  figuresDatas[]    = {
-		0, // a
-		1, // r
-	};
-	int  figuresCords[]    = {
-		-1, // dynamic
-		1,  // center
-	};
-	/*
-	int  figuresCodes[]    = {
-		square,
-		circle,
-	};*/
+	
 
 	char* inputPtr = input;
 	int string = 0;
 
 
+	figure* figures = new figure[stringsNum];
+
+	// corrects - figures[] index
 	// i - string index
 	// j - symbol index
 	// k - figure index, Data index later
-	for (i = 0; i < stringsNum; i += 1) // input errors catch
+	int correct = 0;
+	for (int i = 0, j, k = 0; i < stringsNum; i += 1) // input errors catch
 	{
 		cout << strings[i] << '\n';
 
-		if (strings[i][0] == '(') {errorLog(i, 0, EMPTY_FIGURE_NAME); continue;}
-		if (strings[i][0] == '\0') {errorLog(i, 0, EMPTY_STRING); continue;}
+		if (strings[i][0] == '(') 
+			{errorLog(i, 0, EMPTY_FIGURE_NAME); continue;}
+		if (strings[i][0] == '\0') 
+			{errorLog(i, 0, EMPTY_STRING); continue;}
 
 		j = -1;
 
-
 		while (isalpha(strings[i][++j]));
 		
-		if (isdigit(strings[i][j])) {errorLog(i, j, EXPECTED_OPENED_BRACKET); continue;}
-		if (strings[i][j] == ')') {errorLog(i, j, EXPECTED_OPENED_BRACKET); continue;}
-		if (strings[i][j] != '(') {errorLog(i, j, INVALID_SYMBOL); continue;}
+		if (isdigit(strings[i][j])) 
+			{errorLog(i, j, EXPECTED_OPENED_BRACKET); continue;}
+		if (strings[i][j] == ')') 
+			{errorLog(i, j, EXPECTED_OPENED_BRACKET); continue;}
+		if (strings[i][j] != '(') 
+			{errorLog(i, j, INVALID_SYMBOL); continue;}
 
 		j += 1;
 
@@ -107,49 +108,83 @@ int main()
 
 		if (k > 0) {errorLog(i, 0, INVALID_FIGURE); continue;}
 		k *= -1;
-		//inputCode[i] = k;
-		inputData[i] = new float[figuresDatas[k]];
 		
-
-		int dataNum = figuresDatas[k];
+		switch (k)
+		{
+			case POLYGON: 
+			{
+				figures[correct] = polygon(i);
+				break;
+			}
+			case CIRCLE : 
+			{
+				figures[correct] = circle(i);  
+				break;
+			}
+		}
 
 		bool isbreak = false;
 
-		for(k = 0; k < dataNum; k += 1)
+		for(k = 0; k != figures[correct].datasNum; k += 1)
 		{
+			while (isdigit(strings[i][++j]));
+
+			if (strings[i][j] == ' ') 
+				{errorLog(i, j, EXPECTED_FLOAT_TYPE); isbreak = true; break;}
+			if (strings[i][j] != '.') 
+				{errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
+
 			while (isdigit(strings[i][++j]));
 			
-			if (strings[i][j] == ' ' || strings[i][j] == '.') {errorLog(i, j, EXPECTED_COMMA); isbreak = true; break;}
-			if (strings[i][j] != ',') {errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
-			if (isdigit(strings[i][++j])) {errorLog(i, j, EXPECTED_SPACE); isbreak = true; break;}
-			if (strings[i][j] != ' ') {errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
-
-			while (isdigit(strings[i][++j]));
-
-			if (strings[i][j] == ' ') {errorLog(i, j, EXPECTED_FLOAT_TYPE); isbreak = true; break;}
-			if (strings[i][j] != '.') {errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
-
-
-			while (isdigit(strings[i][++j]));
+			if (strings[i][j] == ' ' || strings[i][j] == '.') 
+				{errorLog(i, j, EXPECTED_COMMA); isbreak = true; break;}
+			if (strings[i][j] != ',') 
+				{errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
+			
+			j += 1;
 		}
 		if (isbreak) continue;
-
-		for (int cord = 0; cord != figuresCords[k]; cord += 1)
+		
+		for (int cord = 0; cord != figures[correct].cordsNum; cord += 1)
 		{
-			if (strings[i][j] == ')' && figuresCords[k] == -1) break;
 			while (isdigit(strings[i][++j]));
 
-			if (strings[i][j] == ' ') {errorLog(i, j, EXPECTED_FLOAT_TYPE); isbreak = true; break;}
-			if (strings[i][j] != '.') {errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
+			if (strings[i][j] == ' ') 
+				{errorLog(i, j, EXPECTED_FLOAT_TYPE); isbreak = true; break;}
+			if (strings[i][j] != '.') 
+				{errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
+
+			while (isdigit(strings[i][++j]));
+			
+			if (strings[i][j] == ',') 
+				{errorLog(i, j, EXPECTED_SPACE); isbreak = true; break;}
+			if (strings[i][j] != ' ') 
+				{errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
 
 
 			while (isdigit(strings[i][++j]));
 
-			if (cord == 0)
-			{
-				if (strings[i][j] == ',') {errorLog(i, j, EXPECTED_SPACE); isbreak = true; break;}
-				if (strings[i][j] != ' ') {errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
-			}
+			if (strings[i][j] == ' ') 
+				{errorLog(i, j, EXPECTED_FLOAT_TYPE); isbreak = true; break;}
+			if (strings[i][j] != '.') 
+				{errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
+
+			while (isdigit(strings[i][++j]));
+
+			if (strings[i][j] == ')' && (figures[correct].cordsNum == -1 || figures[correct].cordsNum == cord + 1))
+				{break;}
+			 
+			if (strings[i][j] != ',' && cord + 1 != figures[correct].cordsNum)
+				{errorLog(i, j, EXPECTED_COMMA); isbreak = true; break;}
+
+			j += 1;
+
+			if (isdigit(strings[i][j]))
+				{errorLog(i, j, EXPECTED_SPACE); isbreak = true; break;}
+			if (strings[i][j] != ' ')
+				{errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
+			
+			j += 1;
 		}
 		if (isbreak) continue;
 		
@@ -159,44 +194,40 @@ int main()
 		j += 1;
 		
 		if (strings[i][j] != '\0') {errorLog(i, j, EXPECTED_STRING_END); continue;}
+
+		cout << "no errors\n";
+		correct += 1;
 	}
 
-	while (inputPtr[1] != '\0')
+	cout << "input checked" << '\n';
+
+	if (correct != stringsNum)
 	{
-		int  datas = figuresDatas[i];
-		int  afterPointSymbols;
-		bool wasPoint;
+		cout << "\ninput errors detected, ending\n";
+		cout << correct << ' ' << stringsNum;
+		return 1;
+	}
 
-		for (; inputPtr[-1] != '('; inputPtr += 1);
+	for (int figure = 0; figure < stringsNum; figure += 1)
+	{
+		j = 0;
+		while(!isdigit(strings[figure][++j]));
 
-		for (i = 0; i < datas; i += 1)
+		for (int data = 0; data < figures[figure].datasNum; data += 1)
 		{
-			wasPoint = false;
-			afterPointSymbols = 0;
-			inputData[string][i] = 0;
-
-			for (; inputPtr[0] != ',' && inputPtr[0] != ')'; inputPtr += 1)
-			{
-				if (inputPtr[0] == '.') 
-				{                                    
-					wasPoint = true; 
-					continue;
-				}
-				
-				if (wasPoint) afterPointSymbols += 1;
-				inputData[string][i] += digitFromChar(inputPtr[0]);
-				inputData[string][i] *= 10;
-			}
-			inputPtr += 2;
+			figures[figure].data[data] = strToFloat(strings[figure] + j);
+			while (isDigit(strings[figure][j]) || strings[figure][j] == '.') j += 1;
+			j += 2;
 		}
-		inputPtr -= 2;
-
-		string += 1;
+		for (int cord = 0; cord < figures[figure].cordsNum; cord += 1)
+		{
+			figures[figure].cords[cord][0] = strToFloat(strings[figure] + j);
+			while (isDigit(strings[figure][j]) || strings[figure][j] == '.') j += 1;
+			j += 1;
+			figures[figure].cords[cord][1] = strToFloat(strings[figure] + j);
+			while (isDigit(strings[figure][j]) || strings[figure][j] == '.') j += 1;
+			j += 2;
+		}
 	}
 	
-	
-	//int windowHeight = 1200;
-	//int windowWidth  = 1600;
-	
-	//int fps = 60;
 }

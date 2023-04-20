@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -64,4 +65,28 @@ int digitFromChar(char digit)
 		case '9': return 9;
 		default : return -1;
 	}
+}
+
+float strToFloat(char* string)
+{
+	int i = 0;
+	int afterPoint = 0;
+	bool wasPoint = false;
+	float output = 0;
+
+	while (isDigit(string[i]) || string[i] == '.')
+	{
+		if (string[i] == '.')
+		{
+			wasPoint = true;
+			i += 1;
+			continue;
+		}
+		output *= 10;
+		output += digitFromChar(string[i]);
+		i += 1;
+		if (wasPoint) afterPoint += 1;
+	}
+	output /= pow(10, afterPoint);
+	return output;
 }

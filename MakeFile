@@ -1,8 +1,8 @@
 ﻿CC = g++
 flags = -Wall
 
-main: build/main.o build/strings.o build/errors_catch.o
-	$(CC) $(flags) -o main.exe build/main.o build/strings.o build/errors_catch.o
+main: build/main.o build/strings.o build/errors_catch.o build/figures.o
+	$(CC) $(flags) -o main.exe build/main.o build/strings.o build/errors_catch.o build/figures.o
 
 build/main.o: main.cpp
 	$(CC) -c $(flags) -o build/main.o main.cpp
@@ -12,6 +12,9 @@ build/strings.o: src/strings.cpp
 
 build/errors_catch.o: src/errors_catch.cpp
 	$(CC) -c $(flags) -o build/errors_catch.o src/errors_catch.cpp
+	
+build/figures.o: src/figures.cpp
+	$(CC) -c $(flags) -o build/figures.o src/figures.cpp
 
 
 
