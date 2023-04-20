@@ -96,6 +96,7 @@ int main()
 		if (strings[i][j] == ')') {errorLog(i, j, EXPECTED_OPENED_BRACKET); continue;}
 		if (strings[i][j] != '(') {errorLog(i, j, INVALID_SYMBOL); continue;}
 
+		j += 1;
 
 		for (k = 0; k < figuresNum; k += 1)
 			if (stringsCompare(strings[i], figuresNames[k], '(')) 
@@ -116,6 +117,8 @@ int main()
 
 		for(k = 0; k < dataNum; k += 1)
 		{
+			while (isdigit(strings[i][++j]));
+			
 			if (strings[i][j] == ' ' || strings[i][j] == '.') {errorLog(i, j, EXPECTED_COMMA); isbreak = true; break;}
 			if (strings[i][j] != ',') {errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
 			if (isdigit(strings[i][++j])) {errorLog(i, j, EXPECTED_SPACE); isbreak = true; break;}
@@ -129,7 +132,7 @@ int main()
 
 			while (isdigit(strings[i][++j]));
 		}
-		if (isbreak) break;
+		if (isbreak) continue;
 
 		for (int cord = 0; cord != figuresCords[k]; cord += 1)
 		{
@@ -148,7 +151,7 @@ int main()
 				if (strings[i][j] != ' ') {errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
 			}
 		}
-		if (isbreak) break;
+		if (isbreak) continue;
 		
 
 		if (strings[i][j] != ')') {errorLog(i, j, EXPECTED_CLOSED_BRACKET); continue;}
