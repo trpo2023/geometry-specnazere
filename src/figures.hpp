@@ -12,18 +12,22 @@ struct figure
 
     float square();
 
-    void setCord(int** cords);
+    void setCord(float** cords);
 
-    void setData(int* data);
+    void setData(float* data);
+
+    void print();
 };
 
 struct circle:  public figure
 {
     float square();
 
-    void setCord(int** cords);
+    void setCord(float** cords);
 
-    void setData(int* data);
+    void setData(float* data);
+
+    void print();
 
     circle(int code);
 };
@@ -32,9 +36,11 @@ struct polygon: public figure
 {
     float square();
 
-    void setCord(int** cords);
+    void setCord(float** cords);
 
-    void setData(int* data);
+    void setData(float* data);
+
+    void print();
 
     polygon(int code);
 };

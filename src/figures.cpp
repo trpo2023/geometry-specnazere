@@ -1,6 +1,9 @@
 #include <cmath>
+#include <iostream>
 
 #include "figures.hpp"
+
+using namespace std;
 
 #define pi 3.14159
 
@@ -23,13 +26,28 @@ float circle::square()
     return this->data[1] * pi;
 }
 
-void  circle::setCord(int** cords)
+void  circle::print()
+{
+    cout << this->code << ": polygon" << '\n'
+         << "data:" << '\n'
+         << "radius = " << this->data[0] << '\n'
+
+         << "points cords:" << '\n'
+         << "x" << cout.width(10) << "y" << '\n';
+    
+    for (int cord = 0; cord < this->cordsNum; cord += 1)
+    {
+        cout << this->cords[cord][0] << cout.width(10) << this->cords[cord][1] << '\n';
+    }
+}
+
+void  circle::setCord(float** cords)
 {
     this->cords[0][0] = cords[0][0];
     this->cords[0][1] = cords[0][1];
 }
 
-void  circle::setData(int* data)
+void  circle::setData(float* data)
 {
     this->data[0] = data[0];
 }
@@ -43,7 +61,20 @@ polygon::polygon(int code)
     this->datasNum = 0;
 }
 
-void  polygon::setCord(int** cords)
+void  polygon::print()
+{
+    cout << this->code << ": polygon" << '\n'
+         << "have no data" << '\n'
+         << "points cords:" << '\n'
+         << "x" << cout.width(10) << "y" << '\n';
+    
+    for (int cord = 0; cord < this->cordsNum; cord += 1)
+    {
+        cout << this->cords[cord][0] << cout.width(10) << this->cords[cord][1] << '\n';
+    }
+}
+
+void  polygon::setCord(float** cords)
 {
     this->cords = new float*[cordsNum];
 
