@@ -6,11 +6,14 @@ struct figure
     int datasNum;
 
     int code;
+    int figureCode;
     
     float* data;
     float** cords;
 
-    float square();
+    float square;
+
+    void squareInit();
 
     void setCord(float** cords);
 
@@ -21,26 +24,10 @@ struct figure
 
 struct circle:  public figure
 {
-    float square();
-
-    void setCord(float** cords);
-
-    void setData(float* data);
-
-    void print();
-
     circle(int code);
 };
 
 struct polygon: public figure
 {
-    float square();
-
-    void setCord(float** cords);
-
-    void setData(float* data);
-
-    void print();
-
     polygon(int code);
 };

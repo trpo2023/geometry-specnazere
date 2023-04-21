@@ -146,7 +146,7 @@ int main()
 		if (isbreak) continue;
 		
 		
-		int totalCords;
+		int totalCords = 0;
 
 		for (int cord = 0; cord != figures[correct].cordsNum; cord += 1)
 		{
@@ -174,6 +174,8 @@ int main()
 
 			while (isdigit(strings[i][++j]));
 
+			totalCords += 1;
+			
 			if (strings[i][j] == ')' && (figures[correct].cordsNum == -1 || figures[correct].cordsNum == cord + 1))
 				{break;}
 			 
@@ -188,7 +190,6 @@ int main()
 				{errorLog(i, j, INVALID_SYMBOL); isbreak = true; break;}
 			
 			j += 1;
-			if (figures[i].cordsNum == -1) totalCords += 1;
 		}
 		if (isbreak) continue;
 		
@@ -218,19 +219,22 @@ int main()
 		j = 0;
 		float*  dataArr  = new float [figures[figure].datasNum];
 		float** cordsArr = new float*[figures[figure].cordsNum];
-
+		
 		while(!isdigit(strings[figure][++j]));
-
+		
 		for (int data = 0; data < figures[figure].datasNum; data += 1)
 		{
 			dataArr[data] = strToFloat(strings[figure] + j);
 			while (isDigit(strings[figure][j]) || strings[figure][j] == '.') j += 1;
 			j += 2;
 		}
-		figures[figure].setData(dataArr);
+		if (figures[figure].datasNum) figures[figure].setData(dataArr);
+
 
 		for (int cord = 0; cord < figures[figure].cordsNum; cord += 1)
 		{
+			cordsArr[cord] = new float[2];
+
 			cordsArr[cord][0] = strToFloat(strings[figure] + j);
 			while (isDigit(strings[figure][j]) || strings[figure][j] == '.') j += 1;
 			j += 1;
@@ -240,6 +244,8 @@ int main()
 		}
 
 		figures[figure].setCord(cordsArr);
+
+		figures[figure].squareInit();
 
 		figures[figure].print();
 	}
